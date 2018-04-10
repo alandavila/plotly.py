@@ -34,6 +34,8 @@ def _create_us_counties_df(st_to_state_name_dict, state_to_st_dict):
     shape =  os.path.join(abs_package_data_dir_path, shape)
 
     df_shape = gp.read_file(shape)
+    df_shape['ID_1'] = df_shape['ID_1'].apply(lambda x: str(x))
+    df_shape['ID_2'] = df_shape['ID_2'].apply(lambda x: str(x))
     df_shape['FIPS'] = (df_shape['ID_1'] +
                                 df_shape['ID_2'])
     df_shape['FIPS'] = pd.to_numeric(df_shape['FIPS'])
@@ -45,6 +47,7 @@ def _create_us_counties_df(st_to_state_name_dict, state_to_st_dict):
     df_state = gp.read_file(states_path)
     df_state = df_state[['ID_1', 'NAME_1', 'geometry']]
     df_state = df_state.rename(columns={'NAME_1': 'STATE_NAME'})
+    df_state['ID_1'] = df_state['ID_1'].apply(lambda x: str(x))
 
     filenames = ['MEX_adm2.dbf',
                  'MEX_adm2.shp',
@@ -67,7 +70,9 @@ def _create_us_counties_df(st_to_state_name_dict, state_to_st_dict):
 
     gdf = gp.GeoDataFrame(data=attributes, geometry=geometry)
 
-    gdf['FIPS'] = gdf['ID_1'] + gdf['ID_2']
+    gdf['ID_1'] = gdf['ID_1'].apply(lambda x: str(x))
+    gdf['ID_2'] = gdf['ID_2'].apply(lambda x: str(x))    
+    gdf['FIPS'] = (gdf['ID_1'] + gdf['ID_2'])
     gdf['FIPS'] = pd.to_numeric(gdf['FIPS'])
 
 
@@ -175,8 +180,8 @@ state_to_st_dict = {
 
 }
 
-MX_XRANGE = [-120.0, -85.0]
-MX_YRANGE = [15.0, 35.0]
+MX_XRANGE = [-120.0, -83.0]
+MX_YRANGE = [10.0, 35.0]
 
 
 def _human_format(number):
@@ -803,8 +808,8 @@ def create_mx_choropleth(fips, values, scope=['mex'], binning_endpoints=None,
 
     if len(scope) == 1 and scope[0].lower() == 'mex':
         xaxis_range_low = -120.0
-        xaxis_range_high = -85.0
-        yaxis_range_low = 15.0
+        xaxis_range_high = -83.0
+        yaxis_range_low = 10.0
         yaxis_range_high = 35.0
     else:
         xaxis_range_low = float('inf')
