@@ -23,3 +23,4 @@ from plotly.figure_factory._violin import create_violin
 if optional_imports.get_module('pandas') is not None:
     from plotly.figure_factory._county_choropleth import create_choropleth
     from plotly.figure_factory._mx_choropleth import create_mx_choropleth
+    from plotly.figure_factory._mx_st_choropleth import create_mx_st_choropleth
